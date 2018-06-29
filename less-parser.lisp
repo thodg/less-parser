@@ -1,10 +1,12 @@
 
-(in-package :css-parser)
+(in-package :less-parser)
 
-(defclass css-item (item)
+(defclass less-item (item)
   ((parent :initarg :parent
 	   :accessor item-parent
 	   :type (or null item))))
+
+(defclass @import (less-item) ())
 
 (defclass named-item (css-item)
   ((name :initarg :name
@@ -69,7 +71,7 @@
 	     :reader item-function
 	     :type function-token)))
 
-(defclass css-parser (parser-stream)
+(defclass less-parser (parser-stream)
   ((item :initform (make-instance 'stylesheet)
          :accessor parser-item
          :type css-item)))
@@ -237,8 +239,8 @@
 (defmethod parser-parse ((pr parser))
   (parse-stylesheet pr))
 
-(defun css-parser (stream)
-  (make-instance 'css-parser :stream stream))
+(defun less-parser (stream)
+  (make-instance 'less-parser :stream stream))
 
 #+nil
 (untrace
